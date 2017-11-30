@@ -1,0 +1,88 @@
+﻿@model LogViewWebApplication.Models.LogReadViewModel
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<h2>Event Logs</h2>
+
+@{ 
+    var timeFrom = Model.TimeFrom.ToString("dd/MM/yyyy");
+    var timeTo = Model.TimeTo.ToString("dd/MM/yyyy");
+}
+@Html.PagedListPager((IPagedList)ViewBag.OnePageOfLogs, page => Url.Action("Post", new { page, timeFrom, timeTo, Model.TaskCategory, Model.Description }))
+
+@using (Html.BeginForm("Post", "LogRead"))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.TimeFrom, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeTo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.TimeTo, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaskCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.TaskCategory,
+                                (List<SelectListItem>)ViewData["SelectList_TaskCategory"],
+                                "ALL",
+                                new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Go" class="btn" />
+            </div>
+        </div>
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>Event Log Id</th>
+        <th>Description</th>
+        <th>Task Category</th>
+        <th>Logged On</th>
+        <th>SQL Inserted On</th>
+        <th>Level</th>
+        <th>Machine Name</th>
+    </tr>
+
+    @foreach (var x in ViewBag.OnePageOfLogs)
+    {
+        <tr>
+            <td>@x.RecordId</td>
+            <td>@x.Description</td>
+            <td>@x.TaskCategory</td>
+            <td>@x.TimeCreated</td>
+            <td>@x.InsertDate</td>
+            <td>@x.LevelDisplayName</td>
+            <td>@x.MachineName</td>
+        </tr>
+    }
+</table>
+
+@Html.PagedListPager((IPagedList)ViewBag.OnePageOfLogs, page => Url.Action("Index", new { page }))
+
+<style type="text/css">
+    .container {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+</style>

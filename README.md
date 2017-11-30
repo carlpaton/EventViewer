@@ -1,0 +1,1 @@
+My 'EventViewer' solution was written in C# .NET and is made up of the following projects: EvtxImporter, LogViewWebApplication, Common, Repository, Sharedmodels and Tests

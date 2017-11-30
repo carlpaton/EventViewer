@@ -1,0 +1,34 @@
+﻿DROP TABLE IF EXISTS eventlogs."evtx_log";
+
+CREATE TABLE eventlogs."evtx_log"
+(
+  id serial NOT NULL,
+  level integer,
+  event_id integer,
+  record_id bigint,
+  time_created timestamp without time zone,
+  log_name text,
+  provider_name text,
+  level_display_name text,
+  user_id text,
+  machine_name text,
+  description text,
+  op_code integer,
+  op_code_display_name text,
+  task_category text,
+  keywords text,
+  insert_date timestamp DEFAULT current_timestamp
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE eventlogs."evtx_log"
+  OWNER TO postgres;
+
+
+
+
+
+CREATE INDEX evtx_log_id_index ON eventlogs.evtx_log (id);
+CREATE INDEX evtx_log_time_created_index ON eventlogs.evtx_log (time_created);
+CREATE INDEX evtx_log_description_index ON eventlogs.evtx_log (description);
