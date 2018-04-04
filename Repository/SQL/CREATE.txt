@@ -1,4 +1,6 @@
-﻿DROP TABLE IF EXISTS eventlogs."evtx_log";
+﻿CREATE SCHEMA eventlogs AUTHORIZATION postgres;
+
+DROP TABLE IF EXISTS eventlogs."evtx_log";
 
 CREATE TABLE eventlogs."evtx_log"
 (
